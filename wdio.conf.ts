@@ -57,11 +57,12 @@ export const config: WebdriverIO.Config = {
         {
             maxInstances: 5,
             browserName: 'chrome',
-        //     chromeOptions: { 
-        //         args: ["--headless"
-        //         // , "user-agent=...","--disable-gpu","--window-size=1440,735"
-        //         ]
-        //    }
+            'goog:chromeOptions': {
+                args: [
+                    // "--headless",
+                "--disable-gpu", 
+                "--window-size=1440,735"]
+           }
         },
         // {
         //     maxInstances: 5,
@@ -145,15 +146,19 @@ export const config: WebdriverIO.Config = {
         ['cucumberjs-json', {
             jsonFolder: '.results/json/',
             language: 'en',
-        },
-        ],
+        }],
+        ['allure', {
+            outputDir: './.results/allure-results',
+            disableWebdriverStepsReporting: false,
+            disableWebdriverScreenshotsReporting: false,
+        }],
     ],
 
     //
     // If you are using Cucumber you need to specify the location of your step definitions.
     cucumberOpts: {
         // <string[]> (file/dir) require files before executing features
-        require: ['./features/step-definitions/**/*steps.ts'],
+        require: ['./features/step-definitions/shared.steps.ts'],
         retry: 0,
         // <boolean> show full backtrace for errors
         backtrace: false,
@@ -270,8 +275,11 @@ export const config: WebdriverIO.Config = {
      * @param {number}             result.duration  duration of scenario in milliseconds
      * @param {Object}             context          Cucumber World object
      */
-    // afterStep: function (step, scenario, result, context) {
-    // },
+    afterStep: function (step, scenario, result, context) {
+        if ((result != undefined && !result.passed) || (result.error != null && result.error.startsWith("Error"))) {
+            browser.takeScreenshot();
+        }
+    },
     /**
      *
      * Runs after a Cucumber Scenario.
@@ -282,8 +290,11 @@ export const config: WebdriverIO.Config = {
      * @param {number}                 result.duration  duration of scenario in milliseconds
      * @param {Object}                 context          Cucumber World object
      */
-    // afterScenario: function (world, result, context) {
-    // },
+    afterScenario: function (world, result, context) {
+        if ((result != undefined && !result.passed) || (result.error != null && result.error.startsWith("Error"))) {
+            browser.takeScreenshot();
+        }
+    },
     /**
      *
      * Runs after a Cucumber Feature.
