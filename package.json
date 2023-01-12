@@ -18,7 +18,7 @@
         "wdio-chromedriver-service": "^7.2.2",
         "wdio-cucumberjs-json-reporter": "^4.1.4",
         "wdio-edgedriver-service": "^1.2.0",
-        "wdio-geckodriver-service": "^2.0.3",
+        "wdio-geckodriver-service": "^2.1.2",
         "wdio-safaridriver-service": "^0.0.1"
     },
     "scripts": {
