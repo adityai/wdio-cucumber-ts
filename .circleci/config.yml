@@ -21,7 +21,7 @@ jobs:
             - node-deps-v1-{{ .Branch }}-{{checksum "package-lock.json"}}
       - run:
           name: install packages
-          command: npm ci && sudo apt-get update -y && ./install_chrome_binary.sh
+          command: npm ci && sudo apt-get update -y && sudo chmod 755 install_chrome_binary.sh && ./install_chrome_binary.sh
       - save_cache:
           key: node-deps-v1-{{ .Branch }}-{{checksum "package-lock.json"}}
           paths:
